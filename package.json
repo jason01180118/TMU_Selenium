@@ -1,0 +1,17 @@
+{
+  "name": "tmu_selenium",
+  "version": "0.1.0",
+  "description": "this is a project for auto checked the form",
+  "maintainers": [
+    {
+      "name": "Jason Shen",
+      "email": "jason01180118@gmail.com"
+    }
+  ],
+  "dependencies": {
+    "selenium-webdriver": "^4.9.0"
+  },
+  "scripts": {
+    "start": "node ./app.js"
+  }
+}
