@@ -7,6 +7,7 @@ let chrome = require('selenium-webdriver/chrome');
 
     //gmail account
     const account=''
+    
     //gmail password
     const password=''
 
@@ -43,13 +44,22 @@ let chrome = require('selenium-webdriver/chrome');
     elements[9].click()
 
     await driver.wait(until.elementsLocated(By.id('PC_PageSize')))
-    await driver.findElement(By.id('PC_PageSize')).clear()
     await driver.findElement(By.id('PC_PageSize')).sendKeys(1000)
     driver.findElement(By.id('PC_PageSize')).sendKeys(Key.ENTER);
 
-    await driver.wait(until.elementsLocated(By.tagName('a')))
-    let hrefs=driver.findElements(By.tagName('a'))
+    await driver.wait(until.elementsLocated(By.className('blockUI')))
+    let block= driver.findElement(By.className('blockUI'))
+    await driver.wait(until.elementIsNotVisible(block))
+
+    await driver.wait(until.elementsLocated(By.name('mainFrame')))
+    //go to mainFrame
+    await driver.switchTo().frame(driver.findElement(By.name('mainFrame')));
+
+
+    let hrefs=await driver.findElements(By.tagName('a'))
+    console.log(hrefs.length)
     hrefs[13].click()
+    console.log(123)
 
     await driver.wait(until.alertIsPresent())
     let alert = await driver.switchTo().alert();
