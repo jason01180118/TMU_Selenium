@@ -39,7 +39,7 @@ const debuggingMode = true;
       // SAVE_BTN2
       await driver.wait(until.elementLocated(By.id('SAVE_BTN2')))
       let saveBTN = await driver.findElement(By.id('SAVE_BTN2'))
-      saveBTN.click()
+      // saveBTN.click()
     }
 
     // Connect to debugging browser
@@ -66,12 +66,12 @@ const debuggingMode = true;
     await driver.wait(until.urlContains('myaccount.google.com'))
     
     
-    }
+    
     await driver.get('https://newacademic.tmu.edu.tw/')
     await driver.wait(until.elementsLocated(By.id('LGOIN_BTN1')))
     await driver.wait(until.elementIsVisible(driver.findElement(By.id('LGOIN_BTN1'))))
     await driver.findElement(By.id('LGOIN_BTN1')).click()
-    
+    }
 
     await driver.wait(until.elementsLocated(By.name('mainFrame')))
     //go to mainFrame
@@ -94,8 +94,25 @@ const debuggingMode = true;
     hrefs.click()
     
     await alertHandler()
-    await fillQuestion() // if SAVEBTB is clicked
+    await fillQuestion()
     await alertHandler()
+
+  
+
+  // while(true) {
+  //   await driver.switchTo().defaultContent();
+  //   await driver.wait(until.elementsLocated(By.name('mainFrame')))
+  //   await driver.switchTo().frame(driver.findElement(By.name('mainFrame')))
+
+  //   await driver.wait(until.elementsLocated(By.xpath('//span[starts-with(@id, "DataGrid")]/a[@href]')))
+  //   let hrefs = await driver.findElement(By.xpath('//span[starts-with(@id, "DataGrid")]/a[@href]'))
+  //   if(hrefs.length === 0) {break}
+  //   hrefs.click()
+    
+  //   await alertHandler()
+  //   await fillQuestion()
+  //   await alertHandler()
+  // }
 
    } 
    finally {
