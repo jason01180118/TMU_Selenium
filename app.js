@@ -5,7 +5,7 @@ const {
   until
 } = require('selenium-webdriver')
 const chrome = require('selenium-webdriver/chrome')
-const debuggingMode = true;
+const debuggingMode = false;
 // Open debugging browser in terminal
 // chrome.exe  --remote-debugging-port=9222 --user-data-dir='C:\Users\zithr\Desktop\browser'
 
@@ -86,7 +86,6 @@ const debuggingMode = true;
     const elements = await driver.findElement(
       By.xpath('//span[starts-with(@id, "DataGrid")]')
     )
-    // console.log(elements)
     await elements.click()
 
     await driver.wait(until.elementsLocated(By.id('PC_PageSize')))
@@ -94,39 +93,27 @@ const debuggingMode = true;
     await driver.findElement(By.id('PC_PageSize')).sendKeys(Key.ENTER)
 
     while (true) {
-      // console.log('Starting sleep() function...')
+
       await driver.sleep(2000)
-      // console.log('End sleep() function...')
 
-      // console.log('Starting defaultContent() function...')
+      // switch to mainFrame
       await driver.switchTo().defaultContent()
-      // console.log('End defaultContent() function...')
-
-      // console.log('Starting locateMain() function...')
       await driver.wait(until.elementsLocated(By.name('mainFrame')))
-      // console.log('End locateMain() function...')
-
-      // console.log('Starting switchMain() function...')
       await driver.switchTo().frame(driver.findElement(By.name('mainFrame')))
-      // console.log('End switchMain() function...')
 
-      // console.log('Starting waitLocated() function...')
+
       await driver.wait(
         until.elementLocated(
           By.id('DataGrid')
         )
       )
-      // console.log('End waitLocated() function...')
-
-      // console.log('Starting findDataGrid() function...')
       const sortTable = await driver.findElement(
         By.id('DataGrid')
       )
-      // console.log('End findDataGrid() function...')
 
-      // console.log('Starting execteScript() function...')
-      await driver.executeScript('arguments[0].getElementsByTagName("a")[11].click()', sortTable)
-      // console.log('End execteScript() function...')
+      let canClick = await driver.executeScript('return arguments[0].getElementsByTagName("a")[11]', sortTable)
+      if (canClick === null) { break }
+      await driver.executeScript('arguments[0].click()', canClick)
 
       await alertHandler()
       await fillQuestion()
@@ -134,6 +121,6 @@ const debuggingMode = true;
     }
 
   } finally {
-    //     await driver.quit();
+    await driver.quit();
   }
 })()
