@@ -17,7 +17,31 @@ const debuggingMode = true;
     // const userName='USER'
     const options = new chrome.Options();
     // options.addArguments(`user-data-dir=C:\\Users\\${userName}\\AppData\Local\\Google\\Chrome\\User Data`)
-    
+
+    let alertHandler = async function() {
+      await driver.wait(until.alertIsPresent())
+      let alert = await driver.switchTo().alert()
+      await alert.accept();
+    }
+
+    let fillQuestion = async function() {
+      await driver.switchTo().defaultContent();
+      await driver.wait(until.elementsLocated(By.name('viewFrame')))
+      await driver.switchTo().frame(driver.findElement(By.name('viewFrame')))
+   
+      await driver.wait(until.elementLocated(By.id('table2')))
+      let table2 = await driver.findElement(By.id('table2'))
+      let inputs = await table2.findElements(By.css('input[type="radio"]'))
+      for(let i = 0; i < inputs.length; i++) {
+         // console.log(inputs[i])
+         driver.executeScript('arguments[0].checked=true', inputs[i]);
+      }
+      // SAVE_BTN2
+      await driver.wait(until.elementLocated(By.id('SAVE_BTN2')))
+      let saveBTN = await driver.findElement(By.id('SAVE_BTN2'))
+      saveBTN.click()
+    }
+
     // Connect to debugging browser
     if(debuggingMode) {
       options.debuggerAddress('127.0.0.1:9222');
@@ -42,12 +66,13 @@ const debuggingMode = true;
     await driver.wait(until.urlContains('myaccount.google.com'))
     
     
-
+    }
     await driver.get('https://newacademic.tmu.edu.tw/')
     await driver.wait(until.elementsLocated(By.id('LGOIN_BTN1')))
     await driver.wait(until.elementIsVisible(driver.findElement(By.id('LGOIN_BTN1'))))
     await driver.findElement(By.id('LGOIN_BTN1')).click()
     
+
     await driver.wait(until.elementsLocated(By.name('mainFrame')))
     //go to mainFrame
     await driver.switchTo().frame(driver.findElement(By.name('mainFrame')))
@@ -67,42 +92,11 @@ const debuggingMode = true;
     await driver.wait(until.elementsLocated(By.xpath('//span[starts-with(@id, "DataGrid")]/a[@href]')))
     let hrefs = await driver.findElement(By.xpath('//span[starts-with(@id, "DataGrid")]/a[@href]'))
     hrefs.click()
-
-    // Alert function is OK
-    await driver.wait(until.alertIsPresent())
-    let alert = await driver.switchTo().alert()
-    await alert.accept();
-    }
-   
-   await driver.switchTo().defaultContent();
-   await driver.wait(until.elementsLocated(By.name('viewFrame')))
-   await driver.switchTo().frame(driver.findElement(By.name('viewFrame')))
-
-   await driver.wait(until.elementLocated(By.id('table2')))
-   let table2 = await driver.findElement(By.id('table2'))
-   let inputs = await table2.findElements(By.css('input[type="radio"]'))
-   for(let i = 0; i < inputs.length; i++) {
-      // console.log(inputs[i])
-      driver.executeScript('arguments[0].checked=true', inputs[i]);
-   }
-
-
-
-    // await driver.wait(until.elementsLocated(By.tagName('a')))
-    // let hrefs = await driver.findElements(By.tagName('a'))
-    // hrefs[13].click()
-    // await driver.executeScript("document.getElementsByTagName('a')[19].click();")
-
-    /*
-
-
-
     
-    driver.findElement(By.id("SAVE_BTN2")).click()
-    //go back
-    await driver.switchTo().defaultContent();
-    */
-    
+    await alertHandler()
+    await fillQuestion() // if SAVEBTB is clicked
+    await alertHandler()
+
    } 
    finally {
 //     await driver.quit();
