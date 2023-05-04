@@ -1,8 +1,9 @@
-const {Builder, Browser, By, Key, until} = require('selenium-webdriver');
+const {Builder, Browser, By, Key, until, Button} = require('selenium-webdriver');
 let chrome = require('selenium-webdriver/chrome');
-const debuggingMode = false;
+const { elementLocated } = require('selenium-webdriver/lib/until');
+const debuggingMode = true;
 // Open debugging browser in terminal
-// chrome.exe  --remote-debugging-port=9222 --user-data-dir="C:\\Users\\zithr\\Desktop\\autofill\\browser"
+// chrome.exe  --remote-debugging-port=9222 --user-data-dir="C:\Users\zithr\Desktop\browser"
 
 (async function main() {
 
@@ -39,21 +40,22 @@ const debuggingMode = false;
     driver.findElement(By.name('Passwd')).sendKeys(Key.ENTER)
 
     await driver.wait(until.urlContains('myaccount.google.com'))
-    }
+    
     
 
     await driver.get('https://newacademic.tmu.edu.tw/')
     await driver.wait(until.elementsLocated(By.id('LGOIN_BTN1')))
     await driver.wait(until.elementIsVisible(driver.findElement(By.id('LGOIN_BTN1'))))
-    
     await driver.findElement(By.id('LGOIN_BTN1')).click()
+    
     await driver.wait(until.elementsLocated(By.name('mainFrame')))
     //go to mainFrame
-    await driver.switchTo().frame(driver.findElement(By.name('mainFrame')));
+    await driver.switchTo().frame(driver.findElement(By.name('mainFrame')))
     
     
     // xapth: find <span id = 'DataGrid*'>
     let elements = await driver.findElement(By.xpath('//span[starts-with(@id, "DataGrid")]'))
+    // console.log(elements)
     await elements.click()
 
     
@@ -68,19 +70,23 @@ const debuggingMode = false;
 
     // Alert function is OK
     await driver.wait(until.alertIsPresent())
-    let alert = await driver.switchTo().alert();
+    let alert = await driver.switchTo().alert()
     await alert.accept();
-    
-    
-    await driver.wait(until.elementsLocated(By.name('viewFrame')))
-    //go to mainFrame
-    await driver.switchTo().frame(driver.findElement(By.name('viewFrame')));
-    
-    /*
-    await driver.wait(until.elementsLocated(By.xpath('//input[@type = radio]')))
-    let input = driver.findElement(By.xpath('//input[@type = radio]'))
-    input.click()
-    */
+    }
+   
+   await driver.switchTo().defaultContent();
+   await driver.wait(until.elementsLocated(By.name('viewFrame')))
+   await driver.switchTo().frame(driver.findElement(By.name('viewFrame')))
+
+   await driver.wait(until.elementLocated(By.id('table2')))
+   let table2 = await driver.findElement(By.id('table2'))
+   let inputs = await table2.findElements(By.css('input[type="radio"]'))
+   for(let i = 0; i < inputs.length; i++) {
+      // console.log(inputs[i])
+      driver.executeScript('arguments[0].checked=true', inputs[i]);
+   }
+
+
 
     // await driver.wait(until.elementsLocated(By.tagName('a')))
     // let hrefs = await driver.findElements(By.tagName('a'))
