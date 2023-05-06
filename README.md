@@ -5,7 +5,7 @@
 ## [nodejs安裝教學](https://ithelp.ithome.com.tw/articles/10157347)
 ### [官網](https://nodejs.org/zh-tw/download)
 
-- 如果cmd輸入
+- 如果在命令提示字元(cmd)輸入
 ```
 git
 ```
@@ -16,7 +16,7 @@ node
 沒有錯誤就可以開始了
 
 ------
-1. 開啟cmd
+1. 開啟命令提示字元(cmd)
 2. 到桌面
 ```
 cd Desktop 
