@@ -42,6 +42,7 @@ const debuggingMode = false;
     await driver.wait(until.elementLocated(By.id('SAVE_BTN2')))
     const saveBTN = await driver.findElement(By.id('SAVE_BTN2'))
     saveBTN.click()
+    await driver.sleep(2000)
   }
 
   // Connect to debugging browser
