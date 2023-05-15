@@ -11,7 +11,7 @@ const debuggingMode = false;
 
 (async function main() {
   // gmail account
-  const account = ''
+  const account = '@tmu.edu.tw'
 
   // gmail password
   const password = ''
@@ -92,6 +92,39 @@ const debuggingMode = false;
     await driver.wait(until.elementsLocated(By.id('PC_PageSize')))
     await driver.findElement(By.id('PC_PageSize')).sendKeys(1000)
     await driver.findElement(By.id('PC_PageSize')).sendKeys(Key.ENTER)
+
+    while (true) {
+
+      await driver.sleep(2000)
+
+      // switch to mainFrame
+      await driver.switchTo().defaultContent()
+      await driver.wait(until.elementsLocated(By.name('mainFrame')))
+      await driver.switchTo().frame(driver.findElement(By.name('mainFrame')))
+
+
+      await driver.wait(
+        until.elementLocated(
+          By.id('DataGrid')
+        )
+      )
+      const sortTable = await driver.findElement(
+        By.id('DataGrid')
+      )
+
+      let canClick = await driver.executeScript('return arguments[0].getElementsByTagName("a")[11]', sortTable)
+      if (canClick === null) { break }
+      await driver.executeScript('arguments[0].click()', canClick)
+
+      await alertHandler()
+      await fillQuestion()
+      await alertHandler()
+    }
+
+    await driver.wait(until.elementLocated(By.id('Q_CURRI_ASSESS_CODE')))
+    let select = await driver.findElement(By.id('Q_CURRI_ASSESS_CODE'))
+    await driver.executeScript("arguments[0].value = '0002'", select);
+    await driver.executeScript("arguments[0].onchange()", select);
 
     while (true) {
 
