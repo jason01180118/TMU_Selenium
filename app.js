@@ -11,7 +11,7 @@ const debuggingMode = false;
 
 (async function main() {
   // gmail account
-  const account = '@tmu.edu.tw'
+  const account = ''
 
   // gmail password
   const password = ''
